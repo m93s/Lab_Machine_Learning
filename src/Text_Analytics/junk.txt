@@ -1,0 +1,6 @@
+sys.path.append('/home/mayank/IdeaProjects/LabPyhton/src/CustomTools')
+
+#input_traverser = Tools.File_Traverser(input_file, csv=True)
+#print input_traverser.go_to_line(15)
+#print input_traverser.get_total_rows()
+import Tools
