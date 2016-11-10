@@ -5,6 +5,7 @@
 import sys
 import csv
 
+data_dir='/home/mayank/work/projects/text_analytics/data_files'
 input_file=open('../resources/TrainingData.csv','r')
 
 training_file = csv.reader(input_file)
