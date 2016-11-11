@@ -2,6 +2,8 @@ import os
 
 import csv
 
+from nltk.corpus.reader.plaintext import PlaintextCorpusReader
+from nltk.corpus.reader.plaintext import CategorizedPlaintextCorpusReader
 
 def read_file():
     for (row_no, line) in enumerate(reader,1):
@@ -42,3 +44,12 @@ reader = csv.reader(training_file)
 
 cats = get_categories()
 divide_data(cats)
+
+root_dir = os.path.join(srm_data_dir, 'sub_data')
+
+cat_reader = CategorizedCorpusReader()
+
+noraml_reader = PlaintextCorpusReader(root = root_dir,
+                                      fileids = ['Financial.csv'])
+
+cat_reader = CategorizedCorpusReader(root = root_dir)
