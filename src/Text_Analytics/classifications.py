@@ -49,7 +49,7 @@ root_dir = os.path.join(srm_data_dir, 'sub_data')
 
 cat_reader = CategorizedCorpusReader()
 
-noraml_reader = PlaintextCorpusReader(root = root_dir,
+normal_reader = PlaintextCorpusReader(root = root_dir,
                                       fileids = ['Financial.csv'])
 
 cat_reader = CategorizedCorpusReader(root = root_dir)
