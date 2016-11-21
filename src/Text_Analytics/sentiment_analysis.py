@@ -1,5 +1,6 @@
 
 import os
+from os import path
 
 import csv
 
@@ -11,19 +12,15 @@ from nltk.corpus.reader.plaintext import CategorizedPlaintextCorpusReader
 from nltk.classify.naivebayes import NaiveBayesClassifier
 from exceptions import UnicodeDecodeError
 
-corpus_dir =  '/home/mayank/IdeaProjects/Lab_Machine_Learning/src/Text_Analytics/data/rt-polaritydata'
-
-cat_map_ = {
-    'rt-polarity.pos' : ['pos'],
-    'rt-polarity.neg' : ['neg']
-}
 
 def unicode_normalization(file_path):
+
+    source_file_name  = os.path.split(file_path)[1]
+    target_dir = os.path.join(os.path.split(file_path)[0], 'encoded_data')
+
     source_file = codecs.open(file_path,mode = 'r',
                               encoding = 'latin-1', errors = 'ignore')
-    target_file = codecs.open(file_path.rpartition('/')[0]
-                + '/un_'
-                + file_path.rpartition('/')[-1],
+    target_file = codecs.open(os.path.join(target_dir,source_file_name),
                 mode = 'w',
                 encoding = 'utf-8',
                 errors = 'ignore')
@@ -34,18 +31,38 @@ def unicode_normalization(file_path):
         target_file.write(contents)
 
 def corpus_treatment(root):
+    def check_encode_dir():
+        if not os.path.exists(encoded_data_dir):
+            os.makedirs(encoded_data_dir)
+        return None
 
     corpus_dir = root
+    encoded_data_dir = root + '/encoded_data'
+    check_encode_dir()
+    files = [f for f in os.listdir(corpus_dir)
+                if path.isfile(path.join(corpus_dir,f))]
 
-    files =
+    for file in files:
+        unicode_normalization(path.join(corpus_dir,file))
+
     return None
 
 # fileids_ = corpus_dir + '/rt-polarity*'
 
+corpus_dir =  '/home/mayank/IdeaProjects/Lab_Machine_Learning/src/Text_Analytics/data/rt-polaritydata'
+
+cat_map_ = {
+    'rt-polarity.pos' : ['pos'],
+    'rt-polarity.neg' : ['neg']
+}
+
+corpus_treatment(corpus_dir)
+
+encoded_corpus_dir = os.path.join(corpus_dir, 'encoded_data')
 fileids_ = '^rt-polarity.*'
 
 categorized_plaintext_corpusreader = CategorizedPlaintextCorpusReader(
-    root = corpus_dir, cat_map = cat_map_ , fileids = fileids_,
+    root = encoded_corpus_dir, cat_map = t_map_ , fileids = fileids_,
     )
 
 pos_words = categorized_plaintext_corpusreader.words(categories=['pos'])
@@ -57,20 +74,8 @@ neg_sents = categorized_plaintext_corpusreader.sents(categories=['neg'])
 neg_paras = categorized_plaintext_corpusreader.paras(categories=['neg'])
 
 
-# pos_view = categorized_plaintext_corpusreader.words(categories='pos')
-
-
+# NOTE: para views are not working to be looked into later
 
 # classification
-sents = categorized_plaintext_corpusreader.sents()
-
-for steam_view in sents:
-    steam_view.close()
-
-for  senetence in sents:
-    try:
-        print senetence
-    except UnicodeDecodeError:
-        print 'error'
-
-# classifier = NaiveBayesClassifier.train()
+train  = pos_words
+classifier = NaiveBayesClassifier.train(train)
